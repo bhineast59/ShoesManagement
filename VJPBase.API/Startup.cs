@@ -13,6 +13,9 @@ using VJPBase.API.Helpers;
 using VJPBase.API.Services;
 using VJPBase.API.Services.Impl;
 using System.Collections.Generic;
+using ShoesAPI.Services;
+using ShoesAPI.Services.Impl;
+using ShoesAPI.Helpers;
 
 namespace VJPBase.API
 {
@@ -29,6 +32,7 @@ namespace VJPBase.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<DataContext>();
+            services.AddDbContext<QLBanGiayDbContext>();
             services.AddCors();
             services.AddControllers().AddJsonOptions(x => x.JsonSerializerOptions.IgnoreNullValues = true);
             services.AddHttpContextAccessor();
@@ -40,6 +44,8 @@ namespace VJPBase.API
             // configure DI for application services
             services.AddScoped<IJwtUtils, JwtUtils>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IProductService, ProductService>();
+            services.AddScoped<ICustomerService, CustomerService>();
 
             services.AddSwaggerGen(c =>
             {

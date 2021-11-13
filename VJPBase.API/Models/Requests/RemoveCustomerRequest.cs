@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace ShoesAPI.Models.Requests
 {
-    public class FindCustomerNameRequest
+    public class RemoveCustomerRequest
     {
-        [Required]
-        public string HoTenKh { get; set; }
+        public int MaKh { get; set; }
     }
 }

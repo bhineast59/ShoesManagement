@@ -14,7 +14,7 @@ namespace ShoesAPI.Models
 
         public string MaHdb { get; set; }
         public string MaNv { get; set; }
-        public string MaKh { get; set; }
+        public int? MaKh { get; set; }
         public DateTime? NgayLapHd { get; set; }
         public DateTime? NgayLayHang { get; set; }
         public double? TongTien { get; set; }

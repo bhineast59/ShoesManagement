@@ -31,10 +31,40 @@ namespace ShoesAPI.Controllers
         }
 
         [AllowAnonymous]
+        [HttpGet("ThuongHieu")]
+        public IActionResult GetThuongHieu()
+        {
+            var products = _productService.GetThuongHieu();
+            return Ok(products);
+        }
+
+        [AllowAnonymous]
+        [HttpGet("Color")]
+        public IActionResult GetColor()
+        {
+            var products = _productService.GetColor();
+            return Ok(products);
+        }
+
+        [AllowAnonymous]
         [HttpPost("find-product")]
         public IActionResult FindProductName(FindProductNameRequest name)
         {
             var products = _productService.FindProductName(name);
+            return Ok(products);
+        }
+        [AllowAnonymous]
+        [HttpPost("add-product")]
+        public IActionResult CreateProduct(AddProductRequest model)
+        {
+            var products = _productService.CreateProduct(model);
+            return Ok(products);
+        }
+        [AllowAnonymous]
+        [HttpPost("update-product")]
+        public IActionResult UpdateProduct(int idgiay, AddProductRequest model)
+        {
+            var products = _productService.UpdateProduct(idgiay,model);
             return Ok(products);
         }
         [AllowAnonymous]

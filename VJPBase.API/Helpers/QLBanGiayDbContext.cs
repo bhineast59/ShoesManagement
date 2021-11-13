@@ -1,9 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
 using ShoesAPI.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+
 
 namespace ShoesAPI.Helpers
 {
@@ -38,6 +37,7 @@ namespace ShoesAPI.Helpers
         {
             if (!optionsBuilder.IsConfigured)
             {
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
                 optionsBuilder.UseSqlServer("Server=LAPTOP-TA8B4IGR\\SQLEXPRESS;Database=QLBanGiay;Trusted_Connection=True;");
             }
         }
@@ -107,31 +107,27 @@ namespace ShoesAPI.Helpers
 
             modelBuilder.Entity<Ctgiay>(entity =>
             {
-                entity.HasKey(e => new { e.Idsize, e.Idgiay });
-
                 entity.ToTable("CTGiay");
 
-                entity.Property(e => e.Idsize).HasColumnName("IDSize");
-
                 entity.Property(e => e.Idgiay).HasColumnName("IDGiay");
+
+                entity.Property(e => e.Idsize).HasColumnName("IDSize");
 
                 entity.HasOne(d => d.IdgiayNavigation)
                     .WithMany(p => p.Ctgiays)
                     .HasForeignKey(d => d.Idgiay)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_CTGiay_Giay");
+                    .HasConstraintName("FK_CTGiay_Giay1");
 
                 entity.HasOne(d => d.IdsizeNavigation)
                     .WithMany(p => p.Ctgiays)
                     .HasForeignKey(d => d.Idsize)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_CTGiay_Size");
+                    .HasConstraintName("FK_CTGiay_Size1");
             });
 
             modelBuilder.Entity<Cthdban>(entity =>
             {
-                entity.HasKey(e => new { e.MaHdb, e.MaSp });
-
                 entity.ToTable("CTHDBan");
 
                 entity.Property(e => e.MaHdb)
@@ -144,20 +140,17 @@ namespace ShoesAPI.Helpers
                 entity.HasOne(d => d.MaHdbNavigation)
                     .WithMany(p => p.Cthdbans)
                     .HasForeignKey(d => d.MaHdb)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_CTHDBan_HoaDonBan");
 
                 entity.HasOne(d => d.MaSpNavigation)
                     .WithMany(p => p.Cthdbans)
                     .HasForeignKey(d => d.MaSp)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_CTHDBan_SanPham");
+                    .OnDelete(DeleteBehavior.SetNull)
+                    .HasConstraintName("FK_CTHDBan_Giay");
             });
 
             modelBuilder.Entity<Cthdnhap>(entity =>
             {
-                entity.HasKey(e => new { e.MaHdn, e.MaSp });
-
                 entity.ToTable("CTHDNhap");
 
                 entity.Property(e => e.MaHdn)
@@ -170,14 +163,13 @@ namespace ShoesAPI.Helpers
                 entity.HasOne(d => d.MaHdnNavigation)
                     .WithMany(p => p.Cthdnhaps)
                     .HasForeignKey(d => d.MaHdn)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_CTHDNhap_HoaDonNhap");
 
                 entity.HasOne(d => d.MaSpNavigation)
                     .WithMany(p => p.Cthdnhaps)
                     .HasForeignKey(d => d.MaSp)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_CTHDNhap_SanPham");
+                    .OnDelete(DeleteBehavior.SetNull)
+                    .HasConstraintName("FK_CTHDNhap_Giay");
             });
 
             modelBuilder.Entity<Giay>(entity =>
@@ -189,9 +181,7 @@ namespace ShoesAPI.Helpers
 
                 entity.Property(e => e.Idgiay).HasColumnName("IDGiay");
 
-                entity.Property(e => e.Cover)
-                    .HasMaxLength(100)
-                    .IsUnicode(false);
+                entity.Property(e => e.Cover).IsUnicode(false);
 
                 entity.Property(e => e.GhiChu).HasMaxLength(50);
 
@@ -223,10 +213,7 @@ namespace ShoesAPI.Helpers
                     .HasColumnName("MaHDB")
                     .IsFixedLength(true);
 
-                entity.Property(e => e.MaKh)
-                    .HasMaxLength(10)
-                    .HasColumnName("MaKH")
-                    .IsFixedLength(true);
+                entity.Property(e => e.MaKh).HasColumnName("MaKH");
 
                 entity.Property(e => e.MaNv)
                     .HasMaxLength(10)
@@ -294,10 +281,7 @@ namespace ShoesAPI.Helpers
 
                 entity.ToTable("KhachHang");
 
-                entity.Property(e => e.MaKh)
-                    .HasMaxLength(10)
-                    .HasColumnName("MaKH")
-                    .IsFixedLength(true);
+                entity.Property(e => e.MaKh).HasColumnName("MaKH");
 
                 entity.Property(e => e.DiaChi).HasMaxLength(100);
 
@@ -307,18 +291,9 @@ namespace ShoesAPI.Helpers
                     .HasMaxLength(100)
                     .HasColumnName("HoTenKH");
 
-                entity.Property(e => e.Password)
-                    .HasMaxLength(20)
-                    .IsFixedLength(true);
-
                 entity.Property(e => e.Sdt)
                     .HasMaxLength(15)
                     .HasColumnName("SDT")
-                    .IsFixedLength(true);
-
-                entity.Property(e => e.TenTk)
-                    .HasMaxLength(20)
-                    .HasColumnName("TenTK")
                     .IsFixedLength(true);
             });
 

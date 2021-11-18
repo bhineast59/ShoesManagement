@@ -19,10 +19,13 @@ namespace ShoesAPI.Models
         public string GioiTinh { get; set; }
         public DateTime? NgaySinh { get; set; }
         public string DiaChi { get; set; }
-        public double? Luong { get; set; }
         public string Sdt { get; set; }
+        public int? IdchucVu { get; set; }
+        public string TaiKhoan { get; set; }
+        public string Password { get; set; }
+        public int? TrangThai { get; set; }
 
-        public virtual TaiKhoan TaiKhoan { get; set; }
+        public virtual ChucVu IdchucVuNavigation { get; set; }
         public virtual ICollection<HoaDonBan> HoaDonBans { get; set; }
         public virtual ICollection<HoaDonNhap> HoaDonNhaps { get; set; }
     }

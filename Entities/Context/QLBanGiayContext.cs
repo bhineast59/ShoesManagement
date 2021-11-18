@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
+#nullable disable
 
 namespace ShoesAPI.Models
 {
@@ -16,9 +17,8 @@ namespace ShoesAPI.Models
         {
         }
 
-        public virtual DbSet<ChucNang> ChucNangs { get; set; }
+        public virtual DbSet<ChucVu> ChucVus { get; set; }
         public virtual DbSet<Color> Colors { get; set; }
-        public virtual DbSet<CtchucNang> CtchucNangs { get; set; }
         public virtual DbSet<Ctgiay> Ctgiays { get; set; }
         public virtual DbSet<Cthdban> Cthdbans { get; set; }
         public virtual DbSet<Cthdnhap> Cthdnhaps { get; set; }
@@ -29,7 +29,6 @@ namespace ShoesAPI.Models
         public virtual DbSet<NhaCungCap> NhaCungCaps { get; set; }
         public virtual DbSet<NhanVien> NhanViens { get; set; }
         public virtual DbSet<Size> Sizes { get; set; }
-        public virtual DbSet<TaiKhoan> TaiKhoans { get; set; }
         public virtual DbSet<ThuongHieu> ThuongHieus { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -45,20 +44,15 @@ namespace ShoesAPI.Models
         {
             modelBuilder.HasAnnotation("Relational:Collation", "SQL_Latin1_General_CP1_CI_AS");
 
-            modelBuilder.Entity<ChucNang>(entity =>
+            modelBuilder.Entity<ChucVu>(entity =>
             {
-                entity.HasKey(e => e.MaCn);
+                entity.HasKey(e => e.IdchucVu);
 
-                entity.ToTable("ChucNang");
+                entity.ToTable("ChucVu");
 
-                entity.Property(e => e.MaCn)
-                    .HasMaxLength(10)
-                    .HasColumnName("MaCN")
-                    .IsFixedLength(true);
+                entity.Property(e => e.IdchucVu).HasColumnName("IDChucVu");
 
-                entity.Property(e => e.TenCn)
-                    .HasMaxLength(50)
-                    .HasColumnName("TenCN");
+                entity.Property(e => e.TenChucVu).HasMaxLength(50);
             });
 
             modelBuilder.Entity<Color>(entity =>
@@ -73,35 +67,6 @@ namespace ShoesAPI.Models
                     .HasMaxLength(10)
                     .HasColumnName("Color")
                     .IsFixedLength(true);
-            });
-
-            modelBuilder.Entity<CtchucNang>(entity =>
-            {
-                entity.HasKey(e => new { e.Id, e.MaCn });
-
-                entity.ToTable("CTChucNang");
-
-                entity.Property(e => e.Id)
-                    .HasMaxLength(10)
-                    .HasColumnName("ID")
-                    .IsFixedLength(true);
-
-                entity.Property(e => e.MaCn)
-                    .HasMaxLength(10)
-                    .HasColumnName("MaCN")
-                    .IsFixedLength(true);
-
-                entity.HasOne(d => d.IdNavigation)
-                    .WithMany(p => p.CtchucNangs)
-                    .HasForeignKey(d => d.Id)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_CTChucNang_TaiKhoan");
-
-                entity.HasOne(d => d.MaCnNavigation)
-                    .WithMany(p => p.CtchucNangs)
-                    .HasForeignKey(d => d.MaCn)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_CTChucNang_ChucNang");
             });
 
             modelBuilder.Entity<Ctgiay>(entity =>
@@ -348,17 +313,32 @@ namespace ShoesAPI.Models
                     .IsRequired()
                     .HasMaxLength(50);
 
+                entity.Property(e => e.IdchucVu).HasColumnName("IDChucVu");
+
                 entity.Property(e => e.NgaySinh).HasColumnType("date");
+
+                entity.Property(e => e.Password)
+                    .HasMaxLength(20)
+                    .IsFixedLength(true);
 
                 entity.Property(e => e.Sdt)
                     .HasMaxLength(15)
                     .HasColumnName("SDT")
                     .IsFixedLength(true);
 
+                entity.Property(e => e.TaiKhoan)
+                    .HasMaxLength(20)
+                    .IsFixedLength(true);
+
                 entity.Property(e => e.TenNv)
                     .IsRequired()
                     .HasMaxLength(50)
                     .HasColumnName("TenNV");
+
+                entity.HasOne(d => d.IdchucVuNavigation)
+                    .WithMany(p => p.NhanViens)
+                    .HasForeignKey(d => d.IdchucVu)
+                    .HasConstraintName("FK_NhanVien_ChucVu");
             });
 
             modelBuilder.Entity<Size>(entity =>
@@ -368,24 +348,6 @@ namespace ShoesAPI.Models
                 entity.ToTable("Size");
 
                 entity.Property(e => e.Idsize).HasColumnName("IDSize");
-            });
-
-            modelBuilder.Entity<TaiKhoan>(entity =>
-            {
-                entity.ToTable("TaiKhoan");
-
-                entity.Property(e => e.Id)
-                    .HasMaxLength(10)
-                    .HasColumnName("ID")
-                    .IsFixedLength(true);
-
-                entity.Property(e => e.Password).HasMaxLength(50);
-
-                entity.HasOne(d => d.IdNavigation)
-                    .WithOne(p => p.TaiKhoan)
-                    .HasForeignKey<TaiKhoan>(d => d.Id)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_TaiKhoan_NhanVien");
             });
 
             modelBuilder.Entity<ThuongHieu>(entity =>

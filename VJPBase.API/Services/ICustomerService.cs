@@ -14,6 +14,6 @@ namespace ShoesAPI.Services
         public List<CustomerInfoResponse> FindCustomerName(FindCustomerNameRequest name);
         public bool RemoveProduct(RemoveCustomerRequest remove);
         public bool CreateCustomer(UpdateAddCustomerRequest model);
-        public bool UpdateCustomer(int id, UpdateAddCustomerRequest model);
+        public List<CustomerInfoResponse> UpdateCustomer(int id, UpdateAddCustomerRequest model);
     }
 }

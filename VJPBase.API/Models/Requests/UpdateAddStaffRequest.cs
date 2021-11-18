@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ShoesAPI.Models.Response.Dto
+namespace ShoesAPI.Models.Requests
 {
-    public class NhanVien
+    public class UpdateAddStaffRequest
     {
         public string MaNv { get; set; }
         public string Cmnd { get; set; }
@@ -17,10 +17,6 @@ namespace ShoesAPI.Models.Response.Dto
         public int? IdchucVu { get; set; }
         public string TaiKhoan { get; set; }
         public string Password { get; set; }
-        public int? TrangThai { get; set; }
-
-        public virtual ChucVu IdchucVuNavigation { get; set; }
-        public virtual ICollection<HoaDonBan> HoaDonBans { get; set; }
-        public virtual ICollection<HoaDonNhap> HoaDonNhaps { get; set; }
+        public string TenChucVu { get; set; }  
     }
 }

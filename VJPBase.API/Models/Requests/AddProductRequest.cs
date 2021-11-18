@@ -8,6 +8,7 @@ namespace ShoesAPI.Models.Requests
 {
     public class AddProductRequest
     {
+        public int Id { get; set; }
         [Required]
         public string TenGiay { get; set; }
         [Required]
@@ -17,7 +18,7 @@ namespace ShoesAPI.Models.Requests
         [Required]
         public int? SoLuongTon { get; set; }
         [Required]
-        public string Cover { get; set; }
+        public Object Cover { get; set; }
 
         //Table Color
         public int? Idcolor { get; set; }

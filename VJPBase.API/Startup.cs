@@ -46,6 +46,7 @@ namespace VJPBase.API
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<ICustomerService, CustomerService>();
+            services.AddScoped<IStaffService, StaffService>();
 
             services.AddSwaggerGen(c =>
             {

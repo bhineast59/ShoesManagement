@@ -26,7 +26,8 @@ namespace ShoesAPI.Services.Impl
                     MaKh = p.MaKh,
                     HoTenKh = p.HoTenKh,
                     DiaChi = p.DiaChi,
-                    Sdt = p.Sdt,                
+                    Sdt = p.Sdt,    
+                    GhiChu = p.GhiChu
                 }).DefaultIfEmpty().ToList();
             return lst;
         }
@@ -71,26 +72,16 @@ namespace ShoesAPI.Services.Impl
             }
             return true;
         }
-        public bool UpdateCustomer(int id, UpdateAddCustomerRequest model)
+        public List<CustomerInfoResponse> UpdateCustomer(int id, UpdateAddCustomerRequest model)
         {
-            var customer = _context.KhachHangs.Where(p => p.MaKh == id).FirstOrDefault();
-            try
-            {
-                if(customer!= null)
-                {
-                    customer.HoTenKh = model.HoTenKh;
-                    customer.DiaChi = model.DiaChi;
-                    customer.Sdt = model.Sdt;
-                    customer.GhiChu = model.GhiChu;
-                }
-                    _context.SaveChanges();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-                return false;
-            }
-            return true;
+            var customer = _context.KhachHangs.Where(p => p.MaKh == model.MaKh).FirstOrDefault();
+            customer.HoTenKh = model.HoTenKh;
+            customer.DiaChi = model.DiaChi;
+            customer.Sdt = model.Sdt;
+            customer.GhiChu = model.GhiChu;
+            _context.KhachHangs.Update(customer);
+            _context.SaveChanges();  
+            return GetAllCustomer();
         }
 
     }

@@ -62,9 +62,9 @@ namespace ShoesAPI.Controllers
         }
         [AllowAnonymous]
         [HttpPost("update-product")]
-        public IActionResult UpdateProduct(int idgiay, AddProductRequest model)
+        public IActionResult UpdateProduct(int id, AddProductRequest model)
         {
-            var products = _productService.UpdateProduct(idgiay,model);
+            var products = _productService.UpdateProduct(id,model);
             return Ok(products);
         }
         [AllowAnonymous]
@@ -74,5 +74,6 @@ namespace ShoesAPI.Controllers
             var students = _productService.RemoveProduct(remove);
             return Ok(students);
         }
+
     }
 }

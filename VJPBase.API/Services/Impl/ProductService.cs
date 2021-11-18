@@ -30,7 +30,9 @@ namespace ShoesAPI.Services.Impl
                     Mota = p.Mota,
                     SoLuongTon = p.SoLuongTon,
                     TenThuongHieu = p.IdthuongHieuNavigation.TenThuongHieu,
-                    Color = p.IdcolorNavigation.Color1
+                    Color = p.IdcolorNavigation.Color1,
+                    Idcolor = p.Idcolor,
+                    IdthuongHieu = p.IdthuongHieu
             }).ToList();
             return lst;
         }
@@ -82,19 +84,22 @@ namespace ShoesAPI.Services.Impl
                 {
                     TenGiay = model.TenGiay,
                     Dongia = model.Dongia,
-                    Cover = model.Cover,
+                    Cover = model.Cover.ToString(),
                     Mota = model.Mota,
                     SoLuongTon = model.SoLuongTon,
-                    Idcolor = model.Idcolor,
-                    IdthuongHieu = model.IdthuongHieu,
-                    /*IdthuongHieuNavigation = new ThuongHieu()
-                    {
-                        TenThuongHieu = model.TenThuongHieu
-                    },
-                    IdcolorNavigation = new Color()
-                    {
-                        Color1 = model.Color
-                    },*/                    
+                    Idcolor = _context.Colors.Where(p => p.Color1 == model.Color).Select(p => p.Idcolor).FirstOrDefault(),
+                    IdthuongHieu = _context.ThuongHieus.Where(p => p.TenThuongHieu == model.TenThuongHieu).Select(p => p.IdthuongHieu).FirstOrDefault()
+
+                    //IdthuongHieuNavigation = new ThuongHieu()
+                    //{
+                    //    TenThuongHieu = model.TenThuongHieu,
+                    //    IdthuongHieu = _context.ThuongHieus.Where(p => p.TenThuongHieu == model.TenThuongHieu).Select(p => p.IdthuongHieu).FirstOrDefault()
+                    //},
+                    //IdcolorNavigation = new Color()
+                    //{
+                    //    Color1 = model.Color,
+                    //    Idcolor = _context.Colors.Where(p => p.Color1 == model.Color).Select(p => p.Idcolor).FirstOrDefault()
+                    //},
                 };
                 _context.Giays.Add(giay);
                 _context.SaveChanges();
@@ -106,38 +111,28 @@ namespace ShoesAPI.Services.Impl
             }
             return true;
         }
-        public bool UpdateProduct(int idgiay, AddProductRequest model)
+        public List<ProductInfoResponse> UpdateProduct(int id, AddProductRequest model)
         {
-            var products = _context.Giays.ToList();
-            var thuonghieus = _context.ThuongHieus.ToList();
-            var colors = _context.Colors.ToList();
-                   
-            try
-            {
-                var pro = (from product in products
-                           join th in thuonghieus on product.IdthuongHieu equals th.IdthuongHieu
-                           join co in colors on product.Idcolor equals co.Idcolor
-                           where product.Idgiay == idgiay
-                           select new { product, th, co }).FirstOrDefault();
-                if (pro != null)
-                {
-                    pro.product.TenGiay = model.TenGiay;
-                    pro.product.Dongia = model.Dongia;
-                    pro.product.Cover = model.Cover;
-                    pro.product.Mota = model.Mota;
-                    pro.product.SoLuongTon = model.SoLuongTon;
-                    pro.th.IdthuongHieu = (int)model.IdthuongHieu;
-                    pro.co.Idcolor = (int)model.Idcolor;
-                    pro.th.TenThuongHieu = model.TenThuongHieu;
-                    _context.SaveChanges();
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-                return false;
-            }
-            return true;
+            var products = _context.Giays.Where(p => p.Idgiay == model.Id).FirstOrDefault();
+            var thuonghieus = _context.ThuongHieus.Where(p => p.TenThuongHieu == model.TenThuongHieu).FirstOrDefault();
+            var colors = _context.Colors.Where(p => p.Color1 == model.Color).FirstOrDefault();
+
+            products.IdthuongHieuNavigation = thuonghieus;
+            products.IdcolorNavigation = colors;
+            products.Idcolor = colors.Idcolor;
+            products.IdthuongHieu = thuonghieus.IdthuongHieu;
+
+            products.TenGiay = model.TenGiay;
+            products.Dongia = model.Dongia;
+            products.Cover = model.Cover.ToString();
+            products.Mota = model.Mota;
+            products.SoLuongTon = model.SoLuongTon;
+               //pro.th.IdthuongHieu = (int)model.IdthuongHieu;
+               //pro.co.Idcolor = (int)model.Idcolor;
+               //pro.th.TenThuongHieu = model.TenThuongHieu;                    
+            _context.Giays.Update(products);
+            _context.SaveChanges();
+            return GetAllProduct();
         }
 
     }

@@ -13,8 +13,7 @@ namespace ShoesAPI.Models.Requests
         public string GioiTinh { get; set; }
         public DateTime? NgaySinh { get; set; }
         public string DiaChi { get; set; }
-        public string Sdt { get; set; }
-        public int? IdchucVu { get; set; }
+        public string Sdt { get; set; }    
         public string TaiKhoan { get; set; }
         public string Password { get; set; }
         public string TenChucVu { get; set; }  

@@ -118,7 +118,9 @@ namespace ShoesAPI.Services.Impl
                     TaiKhoan = model.TaiKhoan,
                     Password = model.Password,
                     GioiTinh = model.GioiTinh,
-                    IdchucVu = _context.ChucVus.Where(p => p.TenChucVu == model.TenChucVu).Select(p =>p.IdchucVu).FirstOrDefault()                    
+                    IdchucVu = _context.ChucVus.Where(p => p.TenChucVu == model.TenChucVu).Select(p =>p.IdchucVu).FirstOrDefault(),
+                    IdchucVuNavigation = _context.ChucVus.Where(p => p.TenChucVu == model.TenChucVu).FirstOrDefault(),
+                    TrangThai = 0                    
                 };
                 _context.NhanViens.Add(staff);
                 _context.SaveChanges();
